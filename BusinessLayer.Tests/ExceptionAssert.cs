@@ -1,8 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
-namespace BusinessLayer.Tests
+﻿namespace BusinessLayer.Tests
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
     public static class ExceptionAssert
 	{
 		public static T Throws<T>(Action action) where T : Exception

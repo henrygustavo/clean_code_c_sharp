@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomExceptions\NoSessionsApprovedException.cs" />
+    <Compile Include="CustomExceptions\SpeakerDoesntMeetRequirementsException.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session.cs" />
