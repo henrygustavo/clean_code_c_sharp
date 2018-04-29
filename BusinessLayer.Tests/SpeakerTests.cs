@@ -1,14 +1,15 @@
-﻿using DataAccessLayer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-
-namespace BusinessLayer.Tests
+﻿namespace BusinessLayer.Tests
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
+    using System.Collections.Generic;
+    using CustomExceptions;
+    using DataAccessLayer;
+
     [TestClass]
 	public class SpeakerTests
 	{
-		private SqlServerCompactRepository repository = new SqlServerCompactRepository(); //Hard coding to single concrete implementation for simplicity here.
+		private readonly SqlServerCompactRepository _repository = new SqlServerCompactRepository();
 
 		[TestMethod]
 		public void Register_EmptyFirstName_ThrowsArgumentNullException()
@@ -18,7 +19,7 @@ namespace BusinessLayer.Tests
 			speaker.FirstName = "";
 			
 			//act
-			var exception = ExceptionAssert.Throws<ArgumentNullException>( () => speaker.Register(repository));
+			var exception = ExceptionAssert.Throws<ArgumentNullException>( () => speaker.Register(_repository));
 
 			//assert
 			Assert.AreEqual(exception.GetType(), typeof(ArgumentNullException));
@@ -32,7 +33,7 @@ namespace BusinessLayer.Tests
 			speaker.LastName = "";
 
 			//act
-			var exception = ExceptionAssert.Throws<ArgumentNullException>(() => speaker.Register(repository));
+			var exception = ExceptionAssert.Throws<ArgumentNullException>(() => speaker.Register(_repository));
 
 			//assert
 			Assert.AreEqual(exception.GetType(), typeof(ArgumentNullException));
@@ -46,7 +47,7 @@ namespace BusinessLayer.Tests
 			speaker.Email = "";
 
 			//act
-			var exception = ExceptionAssert.Throws<ArgumentNullException>(() => speaker.Register(repository));
+			var exception = ExceptionAssert.Throws<ArgumentNullException>(() => speaker.Register(_repository));
 
 			//assert
 			Assert.AreEqual(exception.GetType(), typeof(ArgumentNullException));
@@ -109,10 +110,10 @@ namespace BusinessLayer.Tests
 			};
 
 			//act
-			var exception = ExceptionAssert.Throws<BusinessLayer.Speaker.NoSessionsApprovedException>(() => speaker.Register(repository));
+			var exception = ExceptionAssert.Throws<NoSessionsApprovedException>(() => speaker.Register(_repository));
 
 			//assert
-			Assert.AreEqual(exception.GetType(), typeof(Speaker.NoSessionsApprovedException));
+			Assert.AreEqual(exception.GetType(), typeof(NoSessionsApprovedException));
 		}
 
 		[TestMethod]
@@ -123,7 +124,7 @@ namespace BusinessLayer.Tests
 			speaker.Sessions = new List<Session>();
 
 			//act
-			var exception = ExceptionAssert.Throws<ArgumentException>(() => speaker.Register(repository));
+			var exception = ExceptionAssert.Throws<ArgumentException>(() => speaker.Register(_repository));
 
 			//assert
 			Assert.AreEqual(exception.GetType(), typeof(ArgumentException));
@@ -138,10 +139,10 @@ namespace BusinessLayer.Tests
 			speakerThatDoesntAppearExceptional.Browser = new WebBrowser("IE", 6);
 
 			//act
-			var exception = ExceptionAssert.Throws<BusinessLayer.Speaker.SpeakerDoesntMeetRequirementsException>(() => speakerThatDoesntAppearExceptional.Register(repository));
+			var exception = ExceptionAssert.Throws<SpeakerDoesntMeetRequirementsException>(() => speakerThatDoesntAppearExceptional.Register(_repository));
 
 			//assert
-			Assert.AreEqual(exception.GetType(), typeof(Speaker.SpeakerDoesntMeetRequirementsException));
+			Assert.AreEqual(exception.GetType(), typeof(SpeakerDoesntMeetRequirementsException));
 		}
 
 		[TestMethod]
@@ -153,10 +154,10 @@ namespace BusinessLayer.Tests
 			speakerThatDoesntAppearExceptional.Email = "name@aol.com";
 
 			//act
-			var exception = ExceptionAssert.Throws<BusinessLayer.Speaker.SpeakerDoesntMeetRequirementsException>(() => speakerThatDoesntAppearExceptional.Register(repository));
+			var exception = ExceptionAssert.Throws<SpeakerDoesntMeetRequirementsException>(() => speakerThatDoesntAppearExceptional.Register(_repository));
 
 			//assert
-			Assert.AreEqual(exception.GetType(), typeof(Speaker.SpeakerDoesntMeetRequirementsException));
+			Assert.AreEqual(exception.GetType(), typeof(SpeakerDoesntMeetRequirementsException));
 		}
 
 		#region Helpers
@@ -170,10 +171,11 @@ namespace BusinessLayer.Tests
 				Employer = "Example Employer",
 				HasBlog = true,
 				Browser = new WebBrowser("test", 1),
-				Exp = 1,
-				Certifications = new System.Collections.Generic.List<string>(),
-				BlogURL = "",
-				Sessions = new System.Collections.Generic.List<Session>() {
+				YearsExperiencie = 1,
+				Certifications = new List<string>(),
+				BlogUrl = "",
+				Sessions = new List<Session>
+				{
 					new Session("test title", "test description")
 				}
 			};
