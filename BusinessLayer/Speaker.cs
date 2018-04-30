@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using CustomExceptions;
+    using Enums;
 
     /// <summary>
     /// Represents a single speaker
@@ -89,7 +90,7 @@
             string emailDomain = Email.Split('@').Last();
 
             return domains.Contains(emailDomain) ||
-                   (Browser.Name == WebBrowser.BrowserName.InternetExplorer &&
+                   (Browser.Name == BrowserName.InternetExplorer &&
                     Browser.MajorVersion < validBrowserVersion);
 
         }

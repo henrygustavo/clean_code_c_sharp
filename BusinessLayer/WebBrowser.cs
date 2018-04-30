@@ -1,5 +1,7 @@
 ﻿namespace BusinessLayer
 {
+    using Enums;
+
     public class WebBrowser
 	{
 		public BrowserName Name { get; set; }
@@ -18,10 +20,5 @@
 			return BrowserName.Unknown;
 		}
 
-		public enum BrowserName
-		{
-			Unknown,
-			InternetExplorer
-		}
 	}
 }
